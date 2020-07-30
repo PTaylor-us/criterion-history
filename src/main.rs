@@ -4,8 +4,7 @@ use std::path::Path;
 mod plotter;
 
 fn main() {
-    println!("Hello, world!");
-    let criterion_output = "../embedded-time/target/criterion";
+    let criterion_output = "target/criterion";
 
     let mut log = Log::new();
 
@@ -40,7 +39,7 @@ fn read_dir_recursively<P: AsRef<Path>>(log: &mut Log, path: P) {
 
                 let mut durations = Vec::new();
                 for record in new_results.records() {
-                    let mut record = record.unwrap();
+                    let record = record.unwrap();
                     let duration: f64 = record.get(5).unwrap().parse().unwrap();
                     let scaling_factor: f64 = match record.get(6) {
                         Some("us") => (1_f64 / 1_000_000_f64),

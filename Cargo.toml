@@ -10,4 +10,3 @@ edition = "2018"
 csv = "1.1"
 plotters = { version = "0.2.15", default_features = false, features = ["datetime", "svg", "line_series", "errorbar", "point_series"] }
 chrono = "0.4.13"
-#serde = { version = "1.0.114", features = ["derive"] }
