@@ -10,15 +10,28 @@ pub(crate) fn plot(log: &Log) -> Result<(), Box<dyn Error>> {
 
     root.fill(&WHITE)?;
 
+    let first_timestamp = log
+        .values()
+        .map(|x| x.iter().min_by_key(|a| a.timestamp).unwrap().timestamp)
+        .min()
+        .unwrap();
+    let last_timestamp = log
+        .values()
+        .map(|x| x.iter().max_by_key(|a| a.timestamp).unwrap().timestamp)
+        .max()
+        .unwrap();
+    let first_timestamp = Utc
+        .datetime_from_str(first_timestamp.to_string().as_str(), "%Y%m%d%H%M")
+        .unwrap();
+    let last_timestamp = Utc
+        .datetime_from_str(last_timestamp.to_string().as_str(), "%Y%m%d%H%M")
+        .unwrap();
     let mut chart = ChartBuilder::on(&root)
         .margin(10)
         .caption("Average Duration of One Iteration", ("sans-serif", 40))
         .set_label_area_size(LabelAreaPosition::Left, 60)
         .set_label_area_size(LabelAreaPosition::Bottom, 40)
-        .build_ranged(
-            Utc.ymd(2020, 7, 29).and_hms(0, 0, 0)..Utc.ymd(2020, 7, 31).and_hms(0, 0, 0),
-            0.0..200.0,
-        )?;
+        .build_ranged(first_timestamp..last_timestamp, 0.0..200.0)?;
 
     chart
         .configure_mesh()
